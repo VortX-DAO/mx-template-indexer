@@ -1,0 +1,48 @@
+{
+  "name": "typeorm-postgres-example",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "engines": {
+    "node": ">=18"
+  },
+  "license": "Unlicense",
+  "devDependencies": {
+    "@types/chai": "^4.3.5",
+    "@types/js-yaml": "^4.0.5",
+    "@types/mocha": "^10.0.1",
+    "@types/node": "^20.3.1",
+    "chai": "^4.3.7",
+    "mocha": "^10.2.0",
+    "ts-mocha": "^10.0.0",
+    "typescript": "^5.1.3"
+  },
+  "dependencies": {
+    "@multiversx/sdk-core": "^12.4.2",
+    "@multiversx/sdk-network-providers": "^1.4.0",
+    "@nestjs/config": "^3.0.0",
+    "js-yaml": "^4.1.0",
+    "pg": "^8.11.0",
+    "to-hex": "^0.0.18",
+    "typeorm": "^0.3.17",
+    "yam": "^1.0.0",
+    "yaml": "^2.3.1"
+  },
+  "scripts": {
+    "build": "yarn build:commonjs && yarn build:es",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build:commonjs": "rimraf lib && tsc --target es5 --outDir lib --module commonjs --declaration",
+    "build:es": "rimraf es && tsc --target es6 --outDir es --module es6",
+    "start:devnet": "yarn copy-devnet-config && ts-node src/",
+    "start:testnet": "yarn copy-testnet-config && ts-node src/",
+    "start:devnet-alpha": "yarn copy-devnet-alpha-config && ts-node src/",
+    "start:devnet-beta": "yarn copy-devnet-beta-config && ts-node src/",
+    "prepare": "yarn build && husky install",
+    "format": "prettier --write .",
+    "copy-devnet-alpha-config": "cp ./config/config.devnet.alpha.yaml ./config/config.yaml",
+    "copy-devnet-beta-config": "cp ./config/config.devnet.beta.yaml ./config/config.yaml",
+    "copy-devnet-config": "cp ./config/config.devnet.yaml ./config/config.yaml",
+    "copy-testnet-config": "cp ./config/config.testnet.yaml ./config/config.yaml",
+    "copy-mainnet-config": "cp ./config/config.mainnet.yaml ./config/config.yaml",
+    "copy-custom-config": "cp ./config/config.custom.yaml ./config/config.yaml"
+  }
+}
