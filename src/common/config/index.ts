@@ -1,13 +1,17 @@
 import * as yaml from "js-yaml";
 import * as fs from "fs";
+import * as dotenv from "dotenv";
 
 export class Config {
   data: Record<string, any>;
   constructor(filename: string) {
-    this.data = yaml.load(fs.readFileSync(filename, "utf8")) as Record<
-      string,
-      any
-    >;
+    dotenv.config();
+    let fileStr = fs.readFileSync(filename, "utf8");
+    const env = process.env;
+    Object.entries(env).map(([k, v]) => {
+      fileStr = fileStr.replace(new RegExp(`\\$\\{${k}\\}`, "gm"), v || "");
+    });
+    this.data = yaml.load(fileStr) as Record<string, any>;
   }
 
   getApiUrl(): string {
@@ -20,7 +24,7 @@ export class Config {
   }
 
   getContractAbiPath(key: string): string {
-    console.log(this.data["abi"][key][0]);
+    console.log(`Contract ABI path: ${this.data["abi"][key][0]}`);
     const contractApiPath = this.data["abi"][key][0];
     if (!contractApiPath) {
       throw new Error(`No contract abi path present - ${key}`);
